@@ -19,3 +19,6 @@ Ported to ros2 version of laser-scan-matcher by [scan_tools](https://github.com/
 - [ ] Support of IMU
 - [ ] Support of odometry
 - [ ] Support of PointCloud msgs
+
+## Example usage:
+`ros2 run ros2_laser_scan_matcher laser_scan_matcher --ros-args -p publish_odom:=/odom -p publish_tf:=true`
