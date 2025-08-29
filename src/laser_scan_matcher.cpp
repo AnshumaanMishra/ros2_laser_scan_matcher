@@ -65,18 +65,18 @@ LaserScanMatcher::LaserScanMatcher() : Node("laser_scan_matcher"), initialized_(
   // Initiate parameters
 
    RCLCPP_INFO(get_logger(), "Creating laser_scan_matcher");
-  add_parameter("publish_odom", rclcpp::ParameterValue(std::string("")),
+  add_parameter("publish_odom", rclcpp::ParameterValue(std::string("odom")),
     "If publish odometry from laser_scan. Empty if not, otherwise name of the topic");
-  add_parameter("publish_tf",   rclcpp::ParameterValue(false),
+  add_parameter("publish_tf",   rclcpp::ParameterValue(true),
     " If publish tf odom->base_link");
   
-  add_parameter("base_frame", rclcpp::ParameterValue(std::string("base_link")),
+  add_parameter("base_frame", rclcpp::ParameterValue(std::string("roboracer_1")),
     "Which frame to use for the robot base");
   add_parameter("odom_frame", rclcpp::ParameterValue(std::string("odom")),
     "Which frame to use for the odom");
   add_parameter("map_frame", rclcpp::ParameterValue(std::string("map")),
     "Which frame to use for the map");
-  add_parameter("laser_frame", rclcpp::ParameterValue(std::string("laser")),
+  add_parameter("laser_frame", rclcpp::ParameterValue(std::string("lidar")),
     "Which frame to use for the laser");
   add_parameter("kf_dist_linear", rclcpp::ParameterValue(0.10),
     "When to generate keyframe scan.");
@@ -243,7 +243,7 @@ LaserScanMatcher::LaserScanMatcher() : Node("laser_scan_matcher"), initialized_(
 
 
   // Subscribers
-  this->scan_filter_sub_ = this->create_subscription<sensor_msgs::msg::LaserScan>("scan", rclcpp::SensorDataQoS(), std::bind(&LaserScanMatcher::scanCallback, this, std::placeholders::_1));
+  this->scan_filter_sub_ = this->create_subscription<sensor_msgs::msg::LaserScan>("/autodrive/roboracer_1/lidar", rclcpp::SensorDataQoS(), std::bind(&LaserScanMatcher::scanCallback, this, std::placeholders::_1));
   tf_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
   if (publish_tf_)
     tfB_ = std::make_shared<tf2_ros::TransformBroadcaster>(*this);
